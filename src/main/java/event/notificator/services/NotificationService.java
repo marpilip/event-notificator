@@ -24,10 +24,10 @@ public class NotificationService {
     private final NotificationMapper notificationMapper;
     private final ObjectMapper objectMapper;
 
-    public NotificationService(NotificationRepository notificationRepository, ObjectMapper objectMapper, NotificationMapper notificationMapper, ObjectMapper objectMapper1) {
+    public NotificationService(NotificationRepository notificationRepository, NotificationMapper notificationMapper, ObjectMapper objectMapper) {
         this.notificationRepository = notificationRepository;
         this.notificationMapper = notificationMapper;
-        this.objectMapper = objectMapper1;
+        this.objectMapper = objectMapper;
     }
 
     @Transactional
