@@ -7,6 +7,7 @@ import event.notificator.kafka.EventChangeMessage;
 import event.notificator.kafka.EventFieldChange;
 import event.notificator.mapper.NotificationMapper;
 import event.notificator.model.Notification;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class NotificationService {
         this.objectMapper = objectMapper1;
     }
 
+    @Transactional
     public void processEventChange(EventChangeMessage message) {
         try {
             logger.info("Processing event change for event ID: {}", message.getEventId());
@@ -54,16 +56,19 @@ public class NotificationService {
         }
     }
 
+    @Transactional
     public List<Notification> getUnreadNotifications(Long userId) {
         List<NotificationEntity> entities =
                 notificationRepository.findByUserIdAndIsReadFalseOrderByCreatedAtDesc(userId);
         return notificationMapper.toDomainList(entities);
     }
 
+    @Transactional
     public void markAsRead(List<Long> notificationIds, Long userId) {
         notificationRepository.markAsReadByIdsAndUserId(notificationIds, userId);
     }
 
+    @Transactional
     public void cleanupOldNotifications() {
         notificationRepository.deleteNotificationsOlderThan7Days();
     }
